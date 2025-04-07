@@ -79,6 +79,8 @@ You can also set any non-empty string if you don't want to use that feature (the
 
 You can also modify the `config.yml` file to add/remove MCP servers and change other app behavior.
 
+Currently the config is set to allow the MCP file server to make changes in `~/mcp_allowed` (you'll need to create that directory first).
+
 ### 🚀 5. Run the application
 
 ```bash
