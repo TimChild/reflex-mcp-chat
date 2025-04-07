@@ -24,9 +24,9 @@ from langgraph.pregel import Pregel
 from langgraph.store.base import BaseStore
 from pydantic import BaseModel
 
-from host_app.containers import Application
-from host_app.mcp_client import MultiMCPClient
-from host_app.models import InputState
+from mcp_chat.containers import Application
+from mcp_chat.mcp_client import MultiMCPClient
+from mcp_chat.models import InputState
 
 
 class GraphRunError(Exception):

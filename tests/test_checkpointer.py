@@ -12,7 +12,7 @@ import pytest
 from dependency_injector.wiring import Provide, inject
 from langgraph.checkpoint.base import BaseCheckpointSaver
 
-from host_app.containers import Application
+from mcp_chat.containers import Application
 
 # @inject
 # async def get_conn(conn: Connection = Provide[Application.conn]) -> Connection:

@@ -1,9 +1,9 @@
 import reflex as rx
 import reflex_chakra as rc
 
-from host_app.components import loading_icon
-from host_app.models import ToolCallInfo, ToolsUse
-from host_app.state import QA, State
+from mcp_chat.components import loading_icon
+from mcp_chat.models import ToolCallInfo, ToolsUse
+from mcp_chat.state import QA, State
 
 message_style = dict(
     display="inline-block",

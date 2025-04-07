@@ -3,9 +3,9 @@ from typing import Any
 import reflex as rx
 from dependency_injector.wiring import Provide, inject
 
-from host_app.containers import Application
-from host_app.models import McpServerInfo, ToolInfo
-from host_app.state import State
+from mcp_chat.containers import Application
+from mcp_chat.models import McpServerInfo, ToolInfo
+from mcp_chat.state import State
 
 
 def sidebar_chat(chat: str) -> rx.Component:

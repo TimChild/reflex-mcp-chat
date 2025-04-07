@@ -5,7 +5,7 @@ import pytest
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.store.memory import InMemoryStore
 
-from host_app.containers import Application
+from mcp_chat.containers import Application
 
 
 @pytest.fixture(scope="session")

@@ -14,10 +14,10 @@ from langgraph.graph.graph import CompiledGraph
 from langgraph.pregel import Pregel
 from langgraph.store.base import BaseStore, Item
 
-from host_app.containers import Application
-from host_app.graph import GraphRunAdapter, make_functional_graph, make_standard_graph
-from host_app.graph.functional_implementation import OutputState
-from host_app.models import GraphUpdate, InputState, UpdateTypes
+from mcp_chat.containers import Application
+from mcp_chat.graph import GraphRunAdapter, make_functional_graph, make_standard_graph
+from mcp_chat.graph.functional_implementation import OutputState
+from mcp_chat.models import GraphUpdate, InputState, UpdateTypes
 
 
 @pytest.fixture(scope="session", autouse=True)
