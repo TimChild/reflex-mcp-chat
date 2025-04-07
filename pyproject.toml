@@ -59,6 +59,7 @@ venv = ".venv"
 
 [dependency-groups]
 test = [
+    "ruff>=0.11.4",
     "pyright>=1.1.398",
     "pytest>=8.3.5",
     "pytest-asyncio>=0.26.0",
