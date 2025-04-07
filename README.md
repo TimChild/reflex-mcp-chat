@@ -65,8 +65,6 @@ On macOS:
 brew install go-task/tap/go-task
 ```
 
-<!-- icon for Run Setup -->
-
 ### ⚙️ 4. Setup
 
 Create a `.env` file (or add directly to environment vars):
@@ -76,13 +74,10 @@ Create a `.env` file (or add directly to environment vars):
 - `GITHUB_PERSONAL_ACCESS_TOKEN` -- https://github.com/settings/personal-access-tokens/new
 
 [!TIP]
-You can just set any non-empty string if you don't want to use that feature (the app checks that they are not-null for easier debugging).
+You can copy the `.env.template` file to `.env` and fill in the values there.
+You can also set any non-empty string if you don't want to use that feature (the app checks that they are not-null for easier debugging).
 
-Then, to set up all dependencies
-
-```bash
-task install
-```
+You can also modify the `config.yml` file to add/remove MCP servers and change other app behavior.
 
 ### 🚀 5. Run the application
 
@@ -108,6 +103,12 @@ task run
 ## Development Environment
 
 There are many helpful tasks to help with development:
+
+Then, to set up all development dependencies
+
+```bash
+task install
+```
 
 To run type checking, linting, and testing:
 
