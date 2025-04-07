@@ -85,6 +85,8 @@ You can also modify the `config.yml` file to add/remove MCP servers and change o
 task run
 ```
 
+Then open [localhost:3000](http://localhost:3000) in your browser.
+
 ## App Features
 
 - 100% Python-based, including the UI, using Reflex
