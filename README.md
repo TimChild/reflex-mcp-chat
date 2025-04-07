@@ -67,15 +67,24 @@ brew install go-task/tap/go-task
 
 <!-- icon for Run Setup -->
 
-### ⚙️ 4. Run Setup
+### ⚙️ 4. Setup
 
-To set up all dependencies
+Create a `.env` file (or add directly to environment vars):
+
+- `OPENAI_API_KEY` -- https://platform.openai.com/settings/
+- `ANTHROPIC_API_KEY` -- https://console.anthropic.com/settings/keys
+- `GITHUB_PERSONAL_ACCESS_TOKEN` -- https://github.com/settings/personal-access-tokens/new
+
+[!TIP]
+You can just set any non-empty string if you don't want to use that feature (the app checks that they are not-null for easier debugging).
+
+Then, to set up all dependencies
 
 ```bash
 task install
 ```
 
-### 🚀 3. Run the application
+### 🚀 5. Run the application
 
 ```bash
 task run
