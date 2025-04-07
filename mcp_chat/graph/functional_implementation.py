@@ -196,6 +196,13 @@ async def make_graph(
                 tool_responses: list[ToolMessage] = await call_tools(ai_message, tools=tools)
                 message_history.extend(tool_responses)
                 responses.extend(tool_responses)
+            else:
+                logging.debug("Max iterations reached")
+                responses.append(
+                    AIMessage(
+                        content="Max iterations reached. You can ask me to continue.",
+                    )
+                )
 
         # Save the messages to the store
         if inputs.conversation_id:
