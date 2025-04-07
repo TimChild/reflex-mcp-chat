@@ -383,6 +383,13 @@ dev = [
     { name = "pytest-pretty" },
     { name = "pytest-timeout" },
 ]
+test = [
+    { name = "pyright" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-pretty" },
+    { name = "pytest-timeout" },
+]
 
 [package.metadata]
 requires-dist = [
@@ -402,6 +409,13 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pre-commit", specifier = ">=4.2.0" },
+    { name = "pyright", specifier = ">=1.1.398" },
+    { name = "pytest", specifier = ">=8.3.5" },
+    { name = "pytest-asyncio", specifier = ">=0.26.0" },
+    { name = "pytest-pretty", specifier = ">=1.2.0" },
+    { name = "pytest-timeout", specifier = ">=2.3.1" },
+]
+test = [
     { name = "pyright", specifier = ">=1.1.398" },
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "pytest-asyncio", specifier = ">=0.26.0" },
