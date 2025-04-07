@@ -790,6 +790,7 @@ dependencies = [
     { name = "openai" },
     { name = "reflex" },
     { name = "reflex-chakra" },
+    { name = "reflex-github-button" },
 ]
 
 [package.dev-dependencies]
@@ -824,6 +825,7 @@ requires-dist = [
     { name = "openai", specifier = ">=1.14.0" },
     { name = "reflex", specifier = ">=0.7.0" },
     { name = "reflex-chakra", specifier = ">=0.7.0" },
+    { name = "reflex-github-button", specifier = ">=0.1.2" },
 ]
 
 [package.metadata.requires-dev]
@@ -1309,6 +1311,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/a7/91/ccb9296288b3c43ccffa888ea7714b3752152979aa76a83000303c17823c/reflex_chakra-0.7.0.tar.gz", hash = "sha256:0802904969bb784856d1cd21b3e33d29b3e26d4038c113fdc599b37f54b5067b", size = 69023 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/6d/d4/c6b79128fec25f3056149588b2c67e63efe1c224b5aad05cc562f5938692/reflex_chakra-0.7.0-py3-none-any.whl", hash = "sha256:aa91a36303fbc23c181019082bf12663fa0ba90f8196b74e40790f3621c9bdd1", size = 174785 },
+]
+
+[[package]]
+name = "reflex-github-button"
+version = "0.1.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "reflex" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c4/a7/92ae219a3464a55f397adadb44d84d5dc5265548282d371549af534e2cc6/reflex_github_button-0.1.2.tar.gz", hash = "sha256:7771cb9f5f317ee548ce4299529fc086a8ab4b3944d2c8c5f9fd32636a548e96", size = 4709 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9d/a9/7af85b215f9cf78d2d96f50e14db82a7fb089c56bc5cac328b69fa339635/reflex_github_button-0.1.2-py3-none-any.whl", hash = "sha256:8c6050dd709e2c9472a28174c2153c7823a6862bf244bbcd0b48a6ac4a5d0027", size = 4041 },
 ]
 
 [[package]]

@@ -2,6 +2,7 @@ from typing import Any
 
 import reflex as rx
 from dependency_injector.wiring import Provide, inject
+from reflex_github_button import github_button
 
 from mcp_chat.containers import Application
 from mcp_chat.models import McpServerInfo, ToolInfo
@@ -159,8 +160,11 @@ def navbar() -> rx.Component:
     return rx.box(
         rx.hstack(
             rx.hstack(
-                rx.avatar(fallback="RC", variant="solid"),
-                rx.heading("Reflex Chat"),
+                rx.link(
+                    rx.avatar(fallback="TC", variant="solid"),
+                    href="https://github.com/TimChild/",
+                ),
+                rx.heading("Reflex MCP Chat"),
                 rx.desktop_only(
                     rx.badge(
                         State.current_chat,
@@ -171,7 +175,11 @@ def navbar() -> rx.Component:
                         variant="soft",
                     )
                 ),
-                align_items="center",
+                align="center",
+            ),
+            rx.hstack(
+                github_button("star", "TimChild", "reflex-mcp-chat", show_count=True),
+                align="center",
             ),
             rx.hstack(
                 graph_mode_selection(),
@@ -196,10 +204,10 @@ def navbar() -> rx.Component:
                 #         background_color=rx.color("mauve", 6),
                 #     )
                 # ),
-                align_items="center",
+                align="center",
             ),
-            justify_content="space-between",
-            align_items="center",
+            justify="between",
+            align="center",
         ),
         backdrop_filter="auto",
         backdrop_blur="lg",
@@ -209,5 +217,5 @@ def navbar() -> rx.Component:
         position="sticky",
         top="0",
         z_index="100",
-        align_items="center",
+        align="center",
     )
