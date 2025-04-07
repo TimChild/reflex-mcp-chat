@@ -15,6 +15,11 @@ The inner workings are completely new, utilizing the latest approaches to LLM ap
 - [Reflex](https://reflex.dev/) - A Python web framework for building interactive web applications.
 - [LangGraph](https://www.langchain.com/langgraph) - A framework for building LLM applications
 - [MCP](https://modelcontextprotocol.io/introduction) - Anthropics open source protocol for providing context to LLM applications.
+  - Example integrations with:
+    - [GitHubMCP](https://github.com/github/github-mcp-server)
+    - [Git](https://github.com/modelcontextprotocol/servers/tree/main/src/git)
+    - [Filesystem](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem)
+    - [Minimal example SSE](https://github.com/timchild/test-mcp-server)
 - [UV](https://docs.astral.sh/uv/) - An extremely fast Python project manager.
 - [Taskfile](https://taskfile.dev/) - A task runner for automating common tasks in the development process.
 - [GitHubActions](https://github.com/features/actions) - GitHub's automation tool for CI/CD.
