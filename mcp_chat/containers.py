@@ -147,7 +147,7 @@ class Application(containers.DeclarativeContainer):
 
     wiring_config = containers.WiringConfiguration(
         modules=[
-            ".host_app",
+            ".mcp_chat",
             ".state",
             ".components.navbar",
         ],
