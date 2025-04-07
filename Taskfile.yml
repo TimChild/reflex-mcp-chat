@@ -1,0 +1,31 @@
+version: "3"
+
+dotenv: [".env"]
+
+tasks:
+  install:
+    cmds:
+      - uv sync --dev
+      - uv run pre-commit install
+
+  run:
+    cmds:
+      - uv run reflex run
+
+  test:
+    cmds:
+      - uv run ruff check --fix
+      - uv run pyright
+      - uv run pytest
+
+  watch-tests:
+    cmds:
+      - find tests host_app -type f -not -path "*/__pycache__/*" | entr uv run pytest
+
+  watch-ruff:
+    cmds:
+      - find . -type f -name "*.py" -not -path "*/.venv/*" | entr uv run ruff check --fix
+
+  jupyter:
+    cmds:
+      - uv run --with jupyterlab --with jupyterlab-vim jupyter lab

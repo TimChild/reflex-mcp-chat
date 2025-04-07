@@ -1,0 +1,66 @@
+default_model: "openai_gpt4o"
+
+# Used with either sqlite or postgres checkpointer
+# checkpoint_db: checkpoint.db
+# checkpoint_db: postgresql+asyncpg://postgres:password@localhost:5432/postgres
+
+# Only used with postgres store
+# store_db: postgresql+asyncpg://postgres:password@localhost:5432/postgres
+
+system_prompt: |
+  You are a chatbot operating in a developer debugging environment. You can give detailed information about any information you have access to (you do not have to worry about hiding implementation details from a user).
+  Respond in markdown.
+
+# Servers as either urls or paths to python modules (not javascript for now)
+mcp_servers:
+  example_server:
+    # Example connecting to an sse server already running locally
+    url: "http://localhost:9090/sse"
+  git:
+    command: uv
+    args:
+      [
+        "--directory",
+        "../../mcp-servers/official-servers/src/git",
+        "run",
+        "mcp-server-git",
+      ]
+  github:
+    # https://github.com/github/github-mcp-server?tab=readme-ov-file#usage-with-claude-desktop
+    command: docker
+    args:
+      [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}",
+        "ghcr.io/github/github-mcp-server",
+      ]
+  filesystem:
+    command: npx
+    args: ["-y", "@modelcontextprotocol/server-filesystem", "~/mcp_allowed/"]
+
+# Make sure these are set in a `.env` file or in your environment
+secrets:
+  # https://console.anthropic.com/settings/keys
+  ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+  # https://platform.openai.com/settings/
+  OPENAI_API_KEY: ${OPENAI_API_KEY}
+  # https://github.com/settings/personal-access-tokens/new
+  GITHUB_PERSONAL_ACCESS_TOKEN: ${GITHUB_PERSONAL_ACCESS_TOKEN}
+
+logging:
+  version: 1
+  formatters:
+    formatter:
+      format: "[%(asctime)s] [%(levelname)s] [%(name)s]: %(message)s"
+  handlers:
+    console:
+      class: "logging.StreamHandler"
+      level: "INFO"
+      formatter: "formatter"
+      stream: "ext://sys.stderr"
+  root:
+    level: "INFO"
+    handlers: ["console"]

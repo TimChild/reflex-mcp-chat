@@ -1,0 +1,76 @@
+[project]
+name = "host-app"
+version = "0.1.0"
+description = "A demonstration reflex chat app utilizing MCP servers with LangGraph."
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [
+    { name = "Tim Child", email = "timjchild@gmail.com" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Typing :: Typed",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    # "Framework :: Reflex",  # Should be added once this is accepted
+]
+dependencies = [
+    "aiosqlite>=0.21.0",
+    "dependency-injector>=4.46.0",
+    "dotenv>=0.9.9",
+    "langchain-anthropic>=0.3.10",
+    "langchain-mcp-adapters>=0.0.3",
+    "langchain-openai>=0.3.11",
+    "langgraph>=0.3.21",
+    # "langgraph-checkpoint-postgres>=2.0.19",
+    "langgraph-checkpoint-sqlite>=2.0.6",
+    "openai>=1.14.0",
+    # "psycopg2-binary>=2.9.10",
+    "reflex>=0.7.0",
+    "reflex-chakra>=0.7.0",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "ANN"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/*" = [
+    "ANN201",  # No return type
+    "ANN401",  # Any for kwargs
+]
+
+[tool.pyright]
+typeCheckingMode = "standard"
+venvPath = "."
+venv = ".venv"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.2.0",
+    "pyright>=1.1.398",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
+    "pytest-pretty>=1.2.0",
+    "pytest-timeout>=2.3.1",
+]
+
+[tool.pytest.ini_options]
+#log_cli = true
+#log_cli_level = "DEBUG"
+timeout = 300  # Global timeout for all tests (prevent indefinite hangs, but cancels all tests)
+asyncio_mode = "auto"  # Automatically detects async test functions and fixtures and treats them as marked
+asyncio_default_fixture_loop_scope = "session"
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning:langchain_core",
+    "ignore::DeprecationWarning:langgraph",
+    "ignore::DeprecationWarning:pydantic.v1.typing",
+    "ignore::RuntimeWarning:pydantic.v1.main",
+
+]
