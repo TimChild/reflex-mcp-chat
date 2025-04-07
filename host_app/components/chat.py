@@ -103,15 +103,10 @@ def action_bar() -> rx.Component:
                     rx.hstack(
                         rx.vstack(
                             rx.cond(State.current_status, rx.text(State.current_status)),
-                            rx.input(
-                                rx.input.slot(
-                                    rx.tooltip(
-                                        rx.icon("info", size=18),
-                                        content="Enter a question to get a response.",
-                                    )
-                                ),
-                                placeholder="Type something...",
+                            rx.text_area(
+                                enter_key_submit=True,
                                 id="question",
+                                placeholder="Type something...",
                                 width=["15em", "20em", "45em", "50em", "50em", "50em"],
                             ),
                             align="center",
