@@ -26,7 +26,7 @@ def sidebar_chat(chat: str) -> rx.Component:
             rx.button(
                 rx.icon(
                     tag="trash",
-                    on_click=State.delete_chat,
+                    on_click=lambda: State.delete_chat(chat),
                     stroke_width=1,
                 ),
                 width="20%",
@@ -38,8 +38,15 @@ def sidebar_chat(chat: str) -> rx.Component:
     )
 
 
-def sidebar(trigger: rx.Component) -> rx.Component:
+def chat_history_sidebar() -> rx.Component:
     """The sidebar component."""
+    trigger = rx.button(
+        rx.icon(
+            tag="messages-square",
+            color=rx.color("mauve", 12),
+        ),
+        background_color=rx.color("mauve", 6),
+    )
     return rx.drawer.root(
         rx.drawer.trigger(trigger),
         rx.drawer.overlay(),
@@ -65,8 +72,10 @@ def sidebar(trigger: rx.Component) -> rx.Component:
     )
 
 
-def modal(trigger: rx.Component) -> rx.Component:
+def new_chat_dialog() -> rx.Component:
     """A modal to create a new chat."""
+    trigger = rx.button("+ New chat")
+
     return rx.dialog.root(
         rx.dialog.trigger(trigger),
         rx.dialog.content(
@@ -85,6 +94,26 @@ def modal(trigger: rx.Component) -> rx.Component:
                 # background_color=rx.color("mauve", 1),
                 spacing="2",
                 width="100%",
+            ),
+        ),
+    )
+
+
+def options_dialog() -> rx.Component:
+    trigger = rx.button(
+        rx.icon(
+            tag="sliders-horizontal",
+            color=rx.color("mauve", 12),
+        ),
+        background_color=rx.color("mauve", 6),
+    )
+    return rx.dialog.root(
+        rx.dialog.trigger(trigger),
+        rx.dialog.content(
+            rx.hstack(
+                model_selection(),
+                graph_mode_selection(),
+                align="center",
             ),
         ),
     )
@@ -120,9 +149,13 @@ def connected_mcp_server_infos() -> rx.Component:
     return rx.dialog.root(
         rx.dialog.trigger(rx.button("MCP Servers")),
         rx.dialog.content(
-            rx.vstack(
-                rx.foreach(State.mcp_servers, render_mcp_server_info),
-            )
+            rx.scroll_area(
+                rx.vstack(
+                    rx.foreach(State.mcp_servers, render_mcp_server_info),
+                ),
+                max_height="80vh",
+                overflow_y="auto",
+            ),
         ),
     )
 
@@ -182,28 +215,10 @@ def navbar() -> rx.Component:
                 align="center",
             ),
             rx.hstack(
-                graph_mode_selection(),
-                model_selection(),
                 connected_mcp_server_infos(),
-                modal(rx.button("+ New chat")),
-                sidebar(
-                    rx.button(
-                        rx.icon(
-                            tag="messages-square",
-                            color=rx.color("mauve", 12),
-                        ),
-                        background_color=rx.color("mauve", 6),
-                    )
-                ),
-                # rx.desktop_only(
-                #     rx.button(
-                #         rx.icon(
-                #             tag="sliders-horizontal",
-                #             color=rx.color("mauve", 12),
-                #         ),
-                #         background_color=rx.color("mauve", 6),
-                #     )
-                # ),
+                new_chat_dialog(),
+                chat_history_sidebar(),
+                options_dialog(),
                 align="center",
             ),
             justify="between",
