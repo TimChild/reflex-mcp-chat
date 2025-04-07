@@ -1,6 +1,5 @@
 """Using the new Functional API for langgraph."""
 
-import asyncio
 import logging
 from typing import Sequence
 
@@ -12,7 +11,6 @@ from langchain_core.messages import (
     BaseMessage,
     HumanMessage,
     SystemMessage,
-    ToolCall,
     ToolMessage,
     messages_from_dict,
     messages_to_dict,
@@ -21,6 +19,7 @@ from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import BaseTool
 from langgraph.checkpoint.base import BaseCheckpointSaver
 from langgraph.func import entrypoint, task
+from langgraph.prebuilt import ToolNode
 from langgraph.pregel import Pregel
 from langgraph.store.base import BaseStore
 from pydantic import BaseModel
@@ -28,6 +27,10 @@ from pydantic import BaseModel
 from host_app.containers import Application
 from host_app.mcp_client import MultiMCPClient
 from host_app.models import InputState
+
+
+class GraphRunError(Exception):
+    pass
 
 
 class InitializeOutput(BaseModel):
@@ -80,30 +83,56 @@ class CallToolsOutput(BaseModel):
     response_messages: list[BaseMessage]
 
 
+# @task
+# async def call_tools(tool_calls: list[ToolCall], tools: Sequence[BaseTool]) -> list[ToolMessage]:
+#     def missing_message(tool_call: ToolCall) -> ToolMessage:
+#         return ToolMessage(
+#             tool_call_id=tool_call["id"],
+#             content=f"Error: Missing ToolMessage from tool {tool_call['name']}",
+#         )
+#
+#     async def with_error_handling(tool: BaseTool, tool_call: ToolCall) -> ToolMessage:
+#         try:
+#             return await tool.ainvoke(tool_call)
+#         except Exception as e:
+#             return ToolMessage(
+#                 tool_call_id=tool_call["id"],
+#                 content=f"Error: {str(e)}",
+#             )
+#
+#     logging.debug(f"Calling tools: {[tc['name'] for tc in tool_calls]}")
+#
+#     tools_by_name: dict[str, BaseTool] = {tool.name: tool for tool in tools}
+#
+#     response_tasks = []
+#     async with asyncio.TaskGroup() as tg:
+#         for tool_call in tool_calls:
+#             if tool_call["name"] not in tools_by_name:
+#                 response_tasks.append(missing_message(tool_call))
+#             tool = tools_by_name[tool_call["name"]]
+#             response_tasks.append(
+#                 tg.create_task(
+#                     with_error_handling(tool, tool_call),
+#                 )
+#             )
+#
+#     tool_responses = await asyncio.gather(*response_tasks)
+#     assert all(isinstance(tool_response, ToolMessage) for tool_response in tool_responses)
+#     logging.debug("Returning from call_tools")
+#     return tool_responses
+
+
 @task
-async def call_tools(tool_calls: list[ToolCall], tools: Sequence[BaseTool]) -> list[ToolMessage]:
-    def missing_message(tool_call: ToolCall) -> ToolMessage:
-        return ToolMessage(
-            tool_call_id=tool_call["id"],
-            content=f"Error: Missing ToolMessage from tool {tool_call['name']}",
-        )
+async def call_tools(tool_call_message: AIMessage, tools: Sequence[BaseTool]) -> list[ToolMessage]:
+    if not tool_call_message.tool_calls:
+        raise GraphRunError("No tool calls found in the AI message.")
 
-    logging.debug(f"Calling tools: {[tc['name'] for tc in tool_calls]}")
-
-    tools_by_name: dict[str, BaseTool] = {tool.name: tool for tool in tools}
-
-    response_tasks = []
-    async with asyncio.TaskGroup() as tg:
-        for tool_call in tool_calls:
-            if tool_call["name"] not in tools_by_name:
-                response_tasks.append(missing_message(tool_call))
-            tool = tools_by_name[tool_call["name"]]
-            response_tasks.append(tg.create_task(tool.ainvoke(tool_call)))
-
-    tool_responses = await asyncio.gather(*response_tasks)
-    assert all(isinstance(tool_response, ToolMessage) for tool_response in tool_responses)
-    logging.debug("Returning from call_tools")
-    return tool_responses
+    messages_state = await ToolNode(tools=tools, name="tool_node").ainvoke(
+        input={"messages": [tool_call_message]}
+    )
+    results = messages_state["messages"]
+    assert all(isinstance(result, ToolMessage) for result in results)
+    return results
 
 
 class OutputState(BaseModel):
@@ -161,9 +190,10 @@ async def make_graph(
                 if not ai_message.tool_calls:
                     break
 
-                tool_responses: list[ToolMessage] = await call_tools(
-                    ai_message.tool_calls, tools=tools
-                )
+                # tool_responses: list[ToolMessage] = await call_tools(
+                #     ai_message.tool_calls, tools=tools
+                # )
+                tool_responses: list[ToolMessage] = await call_tools(ai_message, tools=tools)
                 message_history.extend(tool_responses)
                 responses.extend(tool_responses)
 
