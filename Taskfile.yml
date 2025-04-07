@@ -20,11 +20,11 @@ tasks:
 
   watch-tests:
     cmds:
-      - find tests host_app -type f -not -path "*/__pycache__/*" | entr uv run pytest
+      - find tests host_app -type f -path "*.py" | entr uv run pytest
 
-  watch-ruff:
+  pre-commit-all:
     cmds:
-      - find . -type f -name "*.py" -not -path "*/.venv/*" | entr uv run ruff check --fix
+      - uv run pre-commit run --all-files
 
   jupyter:
     cmds:
