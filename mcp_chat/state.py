@@ -12,9 +12,9 @@ from dependency_injector.wiring import Provide, inject
 from langchain_core.tools import BaseTool
 from reflex.event import EventType
 
-from host_app.containers import Application
-from host_app.graph import GraphRunAdapter, make_functional_graph, make_standard_graph
-from host_app.mcp_client import MultiMCPClient
+from mcp_chat.containers import Application
+from mcp_chat.graph import GraphRunAdapter, make_functional_graph, make_standard_graph
+from mcp_chat.mcp_client import MultiMCPClient
 
 from .models import (
     QA,

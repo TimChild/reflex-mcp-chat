@@ -20,7 +20,7 @@ tasks:
 
   watch-tests:
     cmds:
-      - find tests host_app -type f -path "*.py" | entr uv run pytest
+      - find tests mcp_chat -type f -path "*.py" | entr uv run pytest
 
   pre-commit-all:
     cmds:

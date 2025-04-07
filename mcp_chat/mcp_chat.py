@@ -8,8 +8,8 @@ import reflex as rx
 import reflex_chakra as rc
 from reflex.config import environment
 
-from host_app.components import chat, navbar
-from host_app.state import State
+from mcp_chat.components import chat, navbar
+from mcp_chat.state import State
 
 from .containers import Application
 

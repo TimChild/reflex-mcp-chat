@@ -22,10 +22,22 @@ from langgraph.store.memory import InMemoryStore
 # from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver, AsyncShallowPostgresSaver
 # from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 # from langgraph.store.postgres import AsyncPostgresStore
-from host_app.mcp_client import MultiMCPClient, SSEConnection, StdioConnection
+from mcp_chat.mcp_client import MultiMCPClient, SSEConnection, StdioConnection
 
 # Load .env file into environment variables (so they can be used in config.yml)
 load_dotenv()
+
+# headers: dict[str, Any] | None
+# """HTTP headers to send to the SSE endpoint"""
+#
+# timeout: float
+# """HTTP timeout"""
+#
+# sse_read_timeout: float
+# """SSE read timeout"""
+#
+# session_kwargs: dict[str, Any] | None
+# """Additional keyword arguments to pass to the ClientSession"""
 
 
 def config_option_to_connections(
@@ -46,7 +58,14 @@ def config_option_to_connections(
     assert isinstance(simple_config_dict, dict)
     for name, conf in simple_config_dict.items():
         if url := conf.get("url"):
-            connections[name] = SSEConnection(transport="sse", url=url)
+            connections[name] = SSEConnection(
+                transport="sse",
+                url=url,
+                headers=None,
+                timeout=10,
+                sse_read_timeout=10,
+                session_kwargs=None,
+            )
         elif command := conf.get("command"):
             args = conf.get("args", [])
             assert isinstance(args, list)
@@ -56,8 +75,10 @@ def config_option_to_connections(
                 command=command,
                 args=args,
                 env=None,
+                cwd=None,
                 encoding="utf-8",
                 encoding_error_handler="strict",
+                session_kwargs=None,
             )
         else:
             raise ValueError(f"Invalid connection configuration: {conf}")
@@ -147,7 +168,7 @@ class Application(containers.DeclarativeContainer):
 
     wiring_config = containers.WiringConfiguration(
         modules=[
-            ".host_app",
+            ".mcp_chat",
             ".state",
             ".components.navbar",
         ],

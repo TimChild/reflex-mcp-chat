@@ -4,7 +4,7 @@ from langchain_core.language_models import BaseChatModel
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.store.memory import InMemoryStore
 
-from host_app.containers import Application
+from mcp_chat.containers import Application
 
 
 def test_container(container: Application):

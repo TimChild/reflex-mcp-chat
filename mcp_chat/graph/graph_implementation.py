@@ -26,9 +26,9 @@ from langgraph.store.memory import InMemoryStore
 from langgraph.types import Command
 from pydantic import BaseModel
 
-from host_app.containers import Application
-from host_app.mcp_client import MultiMCPClient
-from host_app.models import InputState
+from mcp_chat.containers import Application
+from mcp_chat.mcp_client import MultiMCPClient
+from mcp_chat.models import InputState
 
 
 class FullGraphState(BaseModel):

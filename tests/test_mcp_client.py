@@ -4,8 +4,8 @@ import asyncio
 
 import pytest
 
-from host_app.containers import Application, config_option_to_connections
-from host_app.mcp_client import MultiMCPClient
+from mcp_chat.containers import Application, config_option_to_connections
+from mcp_chat.mcp_client import MultiMCPClient
 
 
 async def test_mcp_client_with_missing_server(

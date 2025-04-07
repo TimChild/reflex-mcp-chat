@@ -24,10 +24,10 @@ from langchain_core.runnables import RunnableConfig
 from langgraph.pregel import Pregel
 from pydantic import BaseModel
 
-from host_app.containers import Application
-from host_app.graph.functional_implementation import OutputState
-from host_app.mcp_client import MultiMCPClient
-from host_app.models import (
+from mcp_chat.containers import Application
+from mcp_chat.graph.functional_implementation import OutputState
+from mcp_chat.mcp_client import MultiMCPClient
+from mcp_chat.models import (
     AIEndUpdate,
     AIStartUpdate,
     AIStreamUpdate,
