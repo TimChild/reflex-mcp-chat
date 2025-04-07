@@ -1,6 +1,6 @@
 [project]
 name = "host-app"
-version = "0.1.0"
+# version = "0.1.0"
 description = "A demonstration reflex chat app utilizing MCP servers with LangGraph."
 readme = "README.md"
 requires-python = ">=3.13"
@@ -14,7 +14,6 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "License :: OSI Approved :: MIT License",
     # "Framework :: Reflex",  # Should be added once this is accepted
 ]
 dependencies = [
@@ -32,6 +31,14 @@ dependencies = [
     "reflex>=0.7.0",
     "reflex-chakra>=0.7.0",
 ]
+dynamic = ["version"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "host_app/__init__.py"
 
 [tool.ruff]
 line-length = 100

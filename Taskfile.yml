@@ -29,3 +29,15 @@ tasks:
   jupyter:
     cmds:
       - uv run --with jupyterlab --with jupyterlab-vim jupyter lab
+
+  bump-patch:
+    cmds:
+      - uv run hatch version patch
+
+  bump-minor:
+    cmds:
+      - uv run hatch version minor
+
+  bump-major:
+    cmds:
+      - uv run hatch version major
