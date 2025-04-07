@@ -13,18 +13,17 @@ system_prompt: |
 
 # Servers as either urls or paths to python modules (not javascript for now)
 mcp_servers:
+  # Example for connecting to an sse server already running locally (won't do anything if you don't have one running)
   example_server:
-    # Example connecting to an sse server already running locally
     url: "http://localhost:9090/sse"
+
+  # Example for connecting to a local python MCP server
+  #  Clone the https://github.com/modelcontextprotocol/servers next to this one for this to work
   git:
     command: uv
-    args:
-      [
-        "--directory",
-        "../../mcp-servers/official-servers/src/git",
-        "run",
-        "mcp-server-git",
-      ]
+    args: ["--directory", "../servers/src/git", "run", "mcp-server-git"]
+  # Example for connecting to a dockerized MCP server
+  #  This will work straight away as long as you have docker installed
   github:
     # https://github.com/github/github-mcp-server?tab=readme-ov-file#usage-with-claude-desktop
     command: docker
@@ -37,6 +36,8 @@ mcp_servers:
         "GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}",
         "ghcr.io/github/github-mcp-server",
       ]
+  # Example for connection to a javascript/typescript MCP server
+  #  This will work straight away as long as you have node installed
   filesystem:
     command: npx
     args: ["-y", "@modelcontextprotocol/server-filesystem", "~/mcp_allowed/"]
