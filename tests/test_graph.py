@@ -1,6 +1,5 @@
 """Tests that the graph part of the app works correctly."""
 
-import asyncio
 import uuid
 from typing import Any, Callable, Iterator, Literal, Optional, Sequence, Union
 
@@ -11,29 +10,21 @@ from langchain_core.messages import AIMessage, BaseMessage, ToolCall, ToolMessag
 from langchain_core.runnables import Runnable, RunnableConfig
 from langchain_core.tools import BaseTool
 from langgraph.checkpoint.base import BaseCheckpointSaver
-from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph.graph import CompiledGraph
 from langgraph.pregel import Pregel
 from langgraph.store.base import BaseStore, Item
-from langgraph.store.memory import InMemoryStore
 
-from host_app.containers import Application, config_option_to_connections
+from host_app.containers import Application
 from host_app.graph import GraphRunAdapter, make_functional_graph, make_standard_graph
 from host_app.graph.functional_implementation import OutputState
-from host_app.mcp_client import MultiMCPClient
 from host_app.models import GraphUpdate, InputState, UpdateTypes
 
-EXAMPLE_SERVER_CONFIG = {
-    "command": "uv",
-    "args": ["run", "tests/example_server.py"],
-}
-MISSING_STDIO_SERVER_CONFIG = {
-    "command": "uv",
-    "args": ["run", "non-existent-server.py"],
-}
-MISSING_SSE_SERVER_CONFIG = {
-    "url": "https://missing-server.com",
-}
+
+@pytest.fixture(scope="session", autouse=True)
+def autouse_container(container: Application) -> None:
+    _ = container
+    """Ensure the test container is autoused for all tests in this module."""
+    pass
 
 
 class FakeChatModel(FakeMessagesListChatModel):
@@ -65,43 +56,6 @@ def fake_chat_model() -> FakeChatModel:
             AIMessage("Third response"),
         ]
     )
-
-
-class NotSetModel:
-    pass
-
-
-@pytest.fixture(autouse=True, scope="session")
-def container() -> Iterator[Application]:
-    container = Application()
-    container.wire()
-    container.config.from_yaml("config.yml")
-    with container.config.mcp_servers.override({"example_server": EXAMPLE_SERVER_CONFIG}):
-        with container.llm_models.override({container.config.default_model(): NotSetModel()}):
-            with container.store.override(InMemoryStore()):
-                with container.checkpointer.override(MemorySaver()):
-                    yield container
-    container.unwire()
-
-
-def test_container(container: Application):
-    """Check the container is set up correctly."""
-    conf = container.config.mcp_servers()["example_server"]
-    assert isinstance(conf, dict)
-    assert conf["command"] == "uv"
-    assert conf["args"] == ["run", "tests/example_server.py"]
-    connections = container.mcp_client().connections
-    assert "example_server" in connections
-
-    # NOTE: connections is a dict[name, SSEConnection | StdioConnection]
-    assert "tests/example_server.py" in str(connections["example_server"]), (
-        "Should include the path somewhere"
-    )
-
-    assert isinstance(container.store(), InMemoryStore)
-    assert isinstance(container.checkpointer(), MemorySaver)
-
-    assert len(container.config()["secrets"]) > 0
 
 
 @pytest.fixture
@@ -207,37 +161,18 @@ async def test_graph_has_memory(graph_adapter: GraphRunAdapter, container: Appli
     assert value is not None
 
 
-async def test_mcp_client_with_missing_server(container: Application):
-    with container.config.mcp_servers.override(
-        {
-            "example_server": EXAMPLE_SERVER_CONFIG,
-            "missing_server": MISSING_STDIO_SERVER_CONFIG,
-        }
-    ):
-        # mcp_client = container.adapters.mcp_client()
-        conns = config_option_to_connections(container.config.mcp_servers())
-        mcp_client = MultiMCPClient(connections=conns)
-        mcp_client.set_connection_timeout(0.5)
-
-        async def func() -> None:
-            async with mcp_client:
-                pass
-
-        try:
-            await asyncio.wait_for(func(), timeout=1)
-        except TimeoutError:
-            pytest.fail("Should not hang on missing server")
-
-
 @pytest.mark.usefixtures("mock_chat_model")
 async def test_graph_runs_with_missing_mcp_server(
-    graph_adapter: GraphRunAdapter, container: Application
+    graph_adapter: GraphRunAdapter,
+    container: Application,
+    example_server_config: dict,
+    missing_sse_server_config: dict,
 ):
     """Should still be able to run the graph even if one of the servers is down."""
     with container.config.mcp_servers.override(
         {
-            "example_server": EXAMPLE_SERVER_CONFIG,
-            "missing_server": MISSING_SSE_SERVER_CONFIG,
+            "example_server": example_server_config,
+            "missing_server": missing_sse_server_config,
         }
     ):
         mcp_client = container.mcp_client()

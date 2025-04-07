@@ -1,3 +1,5 @@
+"""A simple example MCP server to run locally for testing purposes."""
+
 from mcp.server.fastmcp import FastMCP
 
 mcp = FastMCP("test-server")

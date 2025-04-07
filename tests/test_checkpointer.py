@@ -28,7 +28,10 @@ async def checkpoint_getter(
 
 
 @pytest.fixture(scope="session")
-async def application() -> AsyncIterator[Application]:
+async def application(with_fake_env_vars: None) -> AsyncIterator[Application]:
+    """App container wiring only the current test module."""
+    _ = with_fake_env_vars
+
     container = Application()
     container.wire(modules=[__name__])
     coro_or_none = container.init_resources()
