@@ -87,13 +87,13 @@ async def call_llm(
 
     chat_model = available_models[config.get("configurable", {}).get("model_name", default_model)]
     model = chat_model.bind_tools(tools)
-    messages: list[BaseMessage] = [
+    messages_history: list[BaseMessage] = [
         SystemMessage(system_prompt),
         *state.previous_messages,
         HumanMessage(state.question),
         *state.response_messages,
     ]
-    response: BaseMessage = await model.ainvoke(input=messages)
+    response: BaseMessage = await model.ainvoke(input=messages_history)
     assert isinstance(response, AIMessage)
     update = CallLLMOutput(response_messages=[response])
 
