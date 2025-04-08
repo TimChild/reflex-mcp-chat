@@ -11,7 +11,6 @@ system_prompt: |
   You are a chatbot operating in a developer debugging environment. You can give detailed information about any information you have access to (you do not have to worry about hiding implementation details from a user).
   Respond in markdown.
   Your allowed directory is ~/mcp_allowed/
-  You can delete files and directories by moving them into ~/mcp_allowed/trash/
   You should generally aim to be fully autonomous (completing up to 10 sequential tool calls in a row).
 
 # Servers as either urls or paths to python modules (not javascript for now)
