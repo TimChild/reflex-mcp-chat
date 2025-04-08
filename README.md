@@ -7,7 +7,7 @@ The interface is based on the [Reflex chat app template](https://github.com/refl
 The inner workings are completely new, utilizing the latest approaches to LLM application development with [LangGraph](https://www.langchain.com/langgraph) and [MCP](https://modelcontextprotocol.io/introduction) (Model Context Protocol).
 
 <div align="center">
-<img src="./docs/demo.webm" alt="icon"/>
+[demo.webm](https://github.com/user-attachments/assets/1c24768b-9d23-423d-b81a-c760c0715b26)
 </div>
 
 ## Key Technologies Used
