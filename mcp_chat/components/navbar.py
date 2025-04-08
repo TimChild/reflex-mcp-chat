@@ -215,7 +215,6 @@ def navbar() -> rx.Component:
                 align="center",
             ),
             rx.hstack(
-                rx.button("Add fake messages", on_click=State.add_fake_messages),
                 connected_mcp_server_infos(),
                 new_chat_dialog(),
                 chat_history_sidebar(),
