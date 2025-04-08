@@ -65,21 +65,29 @@ On macOS:
 brew install go-task/tap/go-task
 ```
 
-<!-- icon for Run Setup -->
+### ⚙️ 4. Setup
 
-### ⚙️ 4. Run Setup
+Create a `.env` file (or add directly to environment vars):
 
-To set up all dependencies
+- `OPENAI_API_KEY` -- https://platform.openai.com/settings/
+- `ANTHROPIC_API_KEY` -- https://console.anthropic.com/settings/keys
+- `GITHUB_PERSONAL_ACCESS_TOKEN` -- https://github.com/settings/personal-access-tokens/new
 
-```bash
-task install
-```
+[!TIP]
+You can copy the `.env.template` file to `.env` and fill in the values there.
+You can also set any non-empty string if you don't want to use that feature (the app checks that they are not-null for easier debugging).
 
-### 🚀 3. Run the application
+You can also modify the `config.yml` file to add/remove MCP servers and change other app behavior.
+
+Currently the config is set to allow the MCP file server to make changes in `~/mcp_allowed` (you'll need to create that directory first).
+
+### 🚀 5. Run the application
 
 ```bash
 task run
 ```
+
+Then open [localhost:3000](http://localhost:3000) in your browser.
 
 ## App Features
 
@@ -99,6 +107,12 @@ task run
 ## Development Environment
 
 There are many helpful tasks to help with development:
+
+Then, to set up all development dependencies
+
+```bash
+task install
+```
 
 To run type checking, linting, and testing:
 

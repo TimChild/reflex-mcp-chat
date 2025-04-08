@@ -1,6 +1,5 @@
 """Initialize the Reflex app and dependecy injector container."""
 
-import logging
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
 
@@ -13,10 +12,6 @@ from mcp_chat.state import State
 
 from .containers import Application
 
-logging.basicConfig(level=logging.DEBUG)
-
-rx.Cookie
-
 
 def index() -> rx.Component:
     """The main app."""
@@ -26,9 +21,10 @@ def index() -> rx.Component:
         chat.action_bar(),
         background_color=rx.color("mauve", 1),
         color=rx.color("mauve", 12),
-        min_height="100vh",
+        height="100vh",
         align_items="stretch",
         spacing="0",
+        justify="space-between",
     )
 
 

@@ -2,6 +2,7 @@ from typing import Any
 
 import reflex as rx
 from dependency_injector.wiring import Provide, inject
+from reflex_github_button import github_button
 
 from mcp_chat.containers import Application
 from mcp_chat.models import McpServerInfo, ToolInfo
@@ -25,7 +26,7 @@ def sidebar_chat(chat: str) -> rx.Component:
             rx.button(
                 rx.icon(
                     tag="trash",
-                    on_click=State.delete_chat,
+                    on_click=lambda: State.delete_chat(chat),
                     stroke_width=1,
                 ),
                 width="20%",
@@ -37,8 +38,15 @@ def sidebar_chat(chat: str) -> rx.Component:
     )
 
 
-def sidebar(trigger: rx.Component) -> rx.Component:
+def chat_history_sidebar() -> rx.Component:
     """The sidebar component."""
+    trigger = rx.button(
+        rx.icon(
+            tag="messages-square",
+            color=rx.color("mauve", 12),
+        ),
+        background_color=rx.color("mauve", 6),
+    )
     return rx.drawer.root(
         rx.drawer.trigger(trigger),
         rx.drawer.overlay(),
@@ -64,8 +72,10 @@ def sidebar(trigger: rx.Component) -> rx.Component:
     )
 
 
-def modal(trigger: rx.Component) -> rx.Component:
+def new_chat_dialog() -> rx.Component:
     """A modal to create a new chat."""
+    trigger = rx.button("+ New chat")
+
     return rx.dialog.root(
         rx.dialog.trigger(trigger),
         rx.dialog.content(
@@ -84,6 +94,26 @@ def modal(trigger: rx.Component) -> rx.Component:
                 # background_color=rx.color("mauve", 1),
                 spacing="2",
                 width="100%",
+            ),
+        ),
+    )
+
+
+def options_dialog() -> rx.Component:
+    trigger = rx.button(
+        rx.icon(
+            tag="sliders-horizontal",
+            color=rx.color("mauve", 12),
+        ),
+        background_color=rx.color("mauve", 6),
+    )
+    return rx.dialog.root(
+        rx.dialog.trigger(trigger),
+        rx.dialog.content(
+            rx.hstack(
+                model_selection(),
+                graph_mode_selection(),
+                align="center",
             ),
         ),
     )
@@ -119,9 +149,13 @@ def connected_mcp_server_infos() -> rx.Component:
     return rx.dialog.root(
         rx.dialog.trigger(rx.button("MCP Servers")),
         rx.dialog.content(
-            rx.vstack(
-                rx.foreach(State.mcp_servers, render_mcp_server_info),
-            )
+            rx.scroll_area(
+                rx.vstack(
+                    rx.foreach(State.mcp_servers, render_mcp_server_info),
+                ),
+                max_height="80vh",
+                overflow_y="auto",
+            ),
         ),
     )
 
@@ -159,8 +193,11 @@ def navbar() -> rx.Component:
     return rx.box(
         rx.hstack(
             rx.hstack(
-                rx.avatar(fallback="RC", variant="solid"),
-                rx.heading("Reflex Chat"),
+                rx.link(
+                    rx.avatar(fallback="TC", variant="solid"),
+                    href="https://github.com/TimChild/",
+                ),
+                rx.heading("Reflex MCP Chat"),
                 rx.desktop_only(
                     rx.badge(
                         State.current_chat,
@@ -171,43 +208,27 @@ def navbar() -> rx.Component:
                         variant="soft",
                     )
                 ),
-                align_items="center",
+                align="center",
             ),
             rx.hstack(
-                graph_mode_selection(),
-                model_selection(),
-                connected_mcp_server_infos(),
-                modal(rx.button("+ New chat")),
-                sidebar(
-                    rx.button(
-                        rx.icon(
-                            tag="messages-square",
-                            color=rx.color("mauve", 12),
-                        ),
-                        background_color=rx.color("mauve", 6),
-                    )
-                ),
-                # rx.desktop_only(
-                #     rx.button(
-                #         rx.icon(
-                #             tag="sliders-horizontal",
-                #             color=rx.color("mauve", 12),
-                #         ),
-                #         background_color=rx.color("mauve", 6),
-                #     )
-                # ),
-                align_items="center",
+                github_button("star", "TimChild", "reflex-mcp-chat", show_count=True),
+                align="center",
             ),
-            justify_content="space-between",
-            align_items="center",
+            rx.hstack(
+                connected_mcp_server_infos(),
+                new_chat_dialog(),
+                chat_history_sidebar(),
+                options_dialog(),
+                align="center",
+            ),
+            justify="between",
+            align="center",
         ),
-        backdrop_filter="auto",
-        backdrop_blur="lg",
         padding="12px",
         border_bottom=f"1px solid {rx.color('mauve', 3)}",
         background_color=rx.color("mauve", 2),
-        position="sticky",
-        top="0",
-        z_index="100",
-        align_items="center",
+        width="100",
+        # position="sticky",
+        # top="0",
+        align="center",
     )

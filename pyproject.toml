@@ -30,6 +30,7 @@ dependencies = [
     # "psycopg2-binary>=2.9.10",
     "reflex>=0.7.0",
     "reflex-chakra>=0.7.0",
+    "reflex-github-button>=0.1.2",
 ]
 dynamic = ["version"]
 

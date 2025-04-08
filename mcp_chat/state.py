@@ -89,9 +89,9 @@ class State(rx.State):
         self.chats[self.new_chat_name] = []
 
     @rx.event
-    def delete_chat(self) -> None:
+    def delete_chat(self, name: str) -> None:
         """Delete the current chat."""
-        del self.chats[self.current_chat]
+        del self.chats[name]
         if len(self.chats) == 0:
             self.chats = DEFAULT_CHATS
         self.current_chat = list(self.chats.keys())[0]

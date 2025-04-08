@@ -13,7 +13,7 @@ message_style = dict(
 )
 
 
-def message(qa: QA) -> rx.Component:
+def render_qa(qa: QA) -> rx.Component:
     """A single question/answer message.
 
     Args:
@@ -57,6 +57,8 @@ def message(qa: QA) -> rx.Component:
             ),
             text_align="right",
             margin_top="1em",
+            max_width="95%",
+            margin_left="auto",
         ),
         rx.cond(
             qa.tool_uses,
@@ -74,6 +76,8 @@ def message(qa: QA) -> rx.Component:
             ),
             text_align="left",
             padding_top="1em",
+            max_width="95%",
+            margin_right="auto",
         ),
         width="100%",
     )
@@ -81,16 +85,21 @@ def message(qa: QA) -> rx.Component:
 
 def chat() -> rx.Component:
     """List all the messages in a single conversation."""
-    return rx.vstack(
-        rx.box(rx.foreach(State.chats[State.current_chat], message), width="100%"),
-        py="8",
+    return rx.auto_scroll(
+        rx.center(
+            rx.box(
+                rx.foreach(State.chats[State.current_chat], render_qa),
+                max_width="50em",
+            ),
+            width="100%",
+        ),
         flex="1",
         width="100%",
-        max_width="50em",
         padding_x="4px",
+        padding_bottom="1em",
         align_self="center",
-        overflow="hidden",
-        padding_bottom="5em",
+        overflow_y="auto",
+        height="100%",
     )
 
 
@@ -127,20 +136,23 @@ def action_bar() -> rx.Component:
                 reset_on_submit=True,
             ),
             rx.text(
-                "ReflexGPT may return factually incorrect or misleading responses. Use discretion.",
+                "Made with ❤️ by ",
+                rx.link(
+                    "Tim",
+                    href="https://adventuresoftim.com",
+                    is_external=True,
+                    color=rx.color("mauve", 12),
+                ),
                 text_align="center",
                 font_size=".75em",
                 color=rx.color("mauve", 10),
             ),
-            rx.logo(margin_top="-1em", margin_bottom="-1em"),
             align_items="center",
         ),
-        position="sticky",
-        bottom="0",
-        left="0",
+        # position="sticky",
+        # bottom="0",
+        # left="0",
         padding_y="16px",
-        backdrop_filter="auto",
-        backdrop_blur="lg",
         border_top=f"1px solid {rx.color('mauve', 3)}",
         background_color=rx.color("mauve", 2),
         align_items="stretch",
