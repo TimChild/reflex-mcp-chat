@@ -2,7 +2,7 @@
 
 A starting point for a highly customizable Python web application that uses LLMs with access to MCP (Model context protocol) servers to build a highly capable chat application.
 
-The interface is based on the [Reflex chat app template](https://github.com/reflex-dev/reflex-chat) for the interface.
+The interface is based on the [Reflex chat app template](https://github.com/reflex-dev/reflex-chat).
 
 The inner workings are completely new, utilizing the latest approaches to LLM application development with [LangGraph](https://www.langchain.com/langgraph) and [MCP](https://modelcontextprotocol.io/introduction) (Model Context Protocol).
 
