@@ -21,9 +21,10 @@ def index() -> rx.Component:
         chat.action_bar(),
         background_color=rx.color("mauve", 1),
         color=rx.color("mauve", 12),
-        min_height="100vh",
+        height="100vh",
         align_items="stretch",
         spacing="0",
+        justify="space-between",
     )
 
 
