@@ -1,6 +1,6 @@
 # Reflex MCP Chat App
 
-A starting point for a highly customizable Python web application that uses LLMs with access to MCP (Model context protocol) servers to build a highly capable chat application.
+A starting point for a highly customizable Python web application that uses LLMs with access to MCP (Model context protocol) servers to build a highly capable chat application. (Please leave a ⭐ if you like it!)
 
 The interface is based on the [Reflex chat app template](https://github.com/reflex-dev/reflex-chat).
 
