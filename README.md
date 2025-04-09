@@ -140,6 +140,7 @@ App configuration is managed via a `config.yml` file and `containers.py` file.
 
 A few things that could improve the app:
 
+- [ ] Add a mkdocs site
 - [ ] Add docker/docker-compose support
 - [ ] Add deployment workflow template
 - [ ] Add end-to-end tests using playwright
