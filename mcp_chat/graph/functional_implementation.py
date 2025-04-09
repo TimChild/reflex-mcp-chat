@@ -83,45 +83,6 @@ class CallToolsOutput(BaseModel):
     response_messages: list[BaseMessage]
 
 
-# @task
-# async def call_tools(tool_calls: list[ToolCall], tools: Sequence[BaseTool]) -> list[ToolMessage]:
-#     def missing_message(tool_call: ToolCall) -> ToolMessage:
-#         return ToolMessage(
-#             tool_call_id=tool_call["id"],
-#             content=f"Error: Missing ToolMessage from tool {tool_call['name']}",
-#         )
-#
-#     async def with_error_handling(tool: BaseTool, tool_call: ToolCall) -> ToolMessage:
-#         try:
-#             return await tool.ainvoke(tool_call)
-#         except Exception as e:
-#             return ToolMessage(
-#                 tool_call_id=tool_call["id"],
-#                 content=f"Error: {str(e)}",
-#             )
-#
-#     logging.debug(f"Calling tools: {[tc['name'] for tc in tool_calls]}")
-#
-#     tools_by_name: dict[str, BaseTool] = {tool.name: tool for tool in tools}
-#
-#     response_tasks = []
-#     async with asyncio.TaskGroup() as tg:
-#         for tool_call in tool_calls:
-#             if tool_call["name"] not in tools_by_name:
-#                 response_tasks.append(missing_message(tool_call))
-#             tool = tools_by_name[tool_call["name"]]
-#             response_tasks.append(
-#                 tg.create_task(
-#                     with_error_handling(tool, tool_call),
-#                 )
-#             )
-#
-#     tool_responses = await asyncio.gather(*response_tasks)
-#     assert all(isinstance(tool_response, ToolMessage) for tool_response in tool_responses)
-#     logging.debug("Returning from call_tools")
-#     return tool_responses
-
-
 @task
 async def call_tools(tool_call_message: AIMessage, tools: Sequence[BaseTool]) -> list[ToolMessage]:
     if not tool_call_message.tool_calls:
@@ -190,9 +151,6 @@ async def make_graph(
                 if not ai_message.tool_calls:
                     break
 
-                # tool_responses: list[ToolMessage] = await call_tools(
-                #     ai_message.tool_calls, tools=tools
-                # )
                 tool_responses: list[ToolMessage] = await call_tools(ai_message, tools=tools)
                 message_history.extend(tool_responses)
                 responses.extend(tool_responses)
