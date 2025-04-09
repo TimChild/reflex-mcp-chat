@@ -110,7 +110,11 @@ async def make_graph(
     available_models: dict[str, BaseChatModel] = Provide[Application.llm_models],
     max_iterations: int = 10,
 ) -> Pregel:
-    """Create a graph with the given checkpointer and store."""
+    """Create a graph with the given checkpointer and store.
+
+    This closure is partly required because of the dependency injection of the checkpointer and
+    store, but it's also a nice way to be able to make configurable graphs.
+    """
 
     @entrypoint(checkpointer=checkpointer, store=store)
     async def graph(
