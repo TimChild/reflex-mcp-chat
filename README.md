@@ -136,6 +136,19 @@ Uses [Dependency Injector](https://python-dependency-injector.ets-labs.org/) for
 
 App configuration is managed via a `config.yml` file and `containers.py` file.
 
+## TODOs:
+
+A few things that could improve the app:
+
+- [ ] Add docker/docker-compose support
+- [ ] Add deployment workflow template
+- [ ] Add end-to-end tests using playwright
+- [ ] Add postgres persistence (partially implemented)
+- [ ] Better handling of long conversations
+- [ ] Better handling of large content returned from tools
+- [ ] Add MCP resource and prompt support
+- [ ] Add MCP sampling support
+
 ## Contributing
 
 If you'd like to contribute, please do the following:
