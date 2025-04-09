@@ -33,10 +33,6 @@ class GraphRunError(Exception):
     pass
 
 
-class InitializeOutput(BaseModel):
-    previous_messages: list[BaseMessage] = []
-
-
 @task
 async def load_previous_messages(
     conversation_id: str | None,
@@ -72,15 +68,6 @@ async def save_messages(
             )
         },
     )
-
-
-class CallToolsInput(BaseModel):
-    response_messages: list[BaseMessage]
-    tools: list[BaseTool]
-
-
-class CallToolsOutput(BaseModel):
-    response_messages: list[BaseMessage]
 
 
 @task
