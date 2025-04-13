@@ -41,3 +41,13 @@ tasks:
   bump-major:
     cmds:
       - uv run hatch version major
+
+  publish:
+    preconditions:
+      - sh: git status
+    cmds:
+      - git diff --quiet --staged || (echo "There are staged changes. They must be committed first" && exit 1)
+      - git diff --quiet || (echo "There are unstaged changes. They must be committed first." && exit 1)
+
+      - uv run hatch version | xargs -I {} git tag -a v{} -m "Release v{}"
+      - git push --follow-tags
